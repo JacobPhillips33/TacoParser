@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace LoggingKata
+﻿namespace LoggingKata
 {
     /// <summary>
     /// Parses a POI file to locate all the Taco Bells
@@ -8,10 +6,9 @@ namespace LoggingKata
     public class TacoParser
     {
         readonly ILog logger = new TacoLogger();
-        
+
         public ITrackable Parse(string line)
         {
-
             // DONE - Take your line and use line.Split(',') to split it up into an array of strings, separated by the char ','
             var cells = line.Split(',');
 
@@ -20,28 +17,19 @@ namespace LoggingKata
             {
                 // DONE - Log that and return null
                 // DONE - Do not fail if one record parsing fails, return null
-
-                logger.LogError("Array length was less than 3");
-
+                logger.LogError("The array length was less than 3.");
                 return null; // DONE - Implement
             }
 
-
             // DONE - grab the latitude from your array at index 0
-            var latParseable = double.TryParse(cells[0], out double latitude);  
-            latitude = latParseable ? latitude : 0;
-            if (latitude == 0)
-            {
-                logger.LogError("Unable to parse latitude");
-            }
+            var latParseable = double.TryParse(cells[0], out double latitude);
+
+            if (!latParseable) logger.LogError("Unable to parse latitude into a double.");
 
             // DONE - grab the longitude from your array at index 1
-            var longParseable = double.TryParse(cells[1], out double longitude);
-            longitude = longParseable ? longitude : 0;
-            if (longitude == 0)
-            {
-                logger.LogError("Unable to parse longitude");
-            }
+            var lonParseable = double.TryParse(cells[1], out double longitude);
+
+            if (!lonParseable) logger.LogError("Unable to parse longitude into a double.");
 
             // DONE - grab the name from your array at index 2
             var name = cells[2];
@@ -54,10 +42,6 @@ namespace LoggingKata
 
             // DONE - Then, you'll need an instance of the TacoBell class
             // DONE - With the name and point set correctly
-
-            // DONE - Then, return the instance of your TacoBell class
-            // DONE - Since it conforms to ITrackable
-                        
             var location = new Point()
             {
                 Latitude = latitude,
@@ -69,6 +53,9 @@ namespace LoggingKata
                 Name = name,
                 Location = location
             };
+
+            // DONE - Then, return the instance of your TacoBell class
+            // DONE - Since it conforms to ITrackable
 
             return tacoBell;
         }
